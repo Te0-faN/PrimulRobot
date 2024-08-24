@@ -1,1 +1,3 @@
-## Aici e codul
+## TODO:
+- sasiu
+- worm gear
