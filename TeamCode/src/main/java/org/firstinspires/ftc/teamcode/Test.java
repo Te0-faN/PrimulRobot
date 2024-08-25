@@ -125,7 +125,7 @@ public class Test extends LinearOpMode
             }
         }
 
-        if (dpad_up) {
+        if (dpad_down) {
             worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             turnage2 = -2.5;
             target2 = (turnage2 / 360) * 28 * ticks2;
