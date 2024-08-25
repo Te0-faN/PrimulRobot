@@ -17,7 +17,7 @@ public class Test extends LinearOpMode
     {
         front_right_motor.setDirection(DcMotorSimple.Direction.REVERSE);
         back_right_motor.setDirection(DcMotorSimple.Direction.REVERSE);
-        front_left_motor.setDirection(DcMotorSimple.Direction.FORWARD); /* Motorul e pus invers */
+        front_left_motor.setDirection(DcMotorSimple.Direction.FORWARD); /* Motorul e pus inveDASDADSADSADSADASDrs */
         back_left_motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
