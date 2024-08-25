@@ -47,7 +47,7 @@ public class Test extends LinearOpMode
         front_left_motor.setDirection(DcMotorSimple.Direction.FORWARD); /* Motorul e pus invers */
         back_left_motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
-	private void UseWheels(){
+	private void UseWormGear(){
 
 		boolean X = gamepad1.x;
 		boolean s = gamepad1.dpad_up;
@@ -157,7 +157,7 @@ public class Test extends LinearOpMode
 
 			while (opModeIsActive()) {
 					SetWheelsPower();
-					UseWheels();
+					UseWormGear();
 
 					sleep(10);
 			}
