@@ -27,6 +27,8 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 public class Test extends LinearOpMode
 {
     final double ticks2 = 751.8f;
+	final double maxPos = 180;
+	double curentPos = 0;
     double target2 = 0;
     double turnage2 = 0;
 
@@ -84,45 +86,44 @@ public class Test extends LinearOpMode
         if (X) {
             worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            /*  Keep moving down until the touch sensor is pressed */
             while (!touch.isPressed()) {
-                /*  Set a downward motion by providing a negative value for turnage2 */
-                turnage2 = -0.5;  /*  Adjust this value according to your requirement */
+                 turnage2 = -0.5;
                 target2 = (turnage2 / 360) * 28 * ticks2;
                 worm_gear.setTargetPosition((int) target2);
                 worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 worm_gear.setPower(0.5);
             }
 
-            /*  Stop the motor once the touch sensor is pressed */
+
             worm_gear.setPower(0);
 
-            /*  Move 2.5 degrees upward */
-            turnage2 = 2.5;  /*  Set the turnage to positive 2.5 for upward movement */
-            target2 = (turnage2 / 360) * 28 * ticks2;
-            worm_gear.setTargetPosition((int) target2);
-            worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            worm_gear.setPower(0.5);
 
-            /*  Wait until the motor reaches the target position */
-            while (worm_gear.isBusy()) {
-                /*  Optionally, you can include some code here if you need to perform other tasks while waiting */
-            }
-
-            /*  Stop the motor after reaching the target position */
-            worm_gear.setPower(0);
-        }
-
-        if (dpad_up) {
-            worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             turnage2 = 2.5;
             target2 = (turnage2 / 360) * 28 * ticks2;
             worm_gear.setTargetPosition((int) target2);
             worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             worm_gear.setPower(0.5);
-            if (touch.isPressed()) {
-                worm_gear.setPower(0);
-            }
+
+
+
+             worm_gear.setPower(0);
+        }
+
+        if (dpad_up) {
+			if(maxPos != curentPos)
+			{
+                worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                turnage2 = 2.5;
+                target2 = (turnage2 / 360) * 28 * ticks2;
+                worm_gear.setTargetPosition((int) target2);
+                worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                worm_gear.setPower(0.5);
+                if (touch.isPressed()) {
+                    worm_gear.setPower(0);
+                } else {
+                    curentPos = curentPos + 2.5;
+                }
+			}
         }
 
         if (dpad_down) {
@@ -134,7 +135,9 @@ public class Test extends LinearOpMode
             worm_gear.setPower(0.5);
             if (touch.isPressed()) {
                 worm_gear.setPower(0);
-            }
+            } else {
+				curentPos = curentPos - 2.5;
+			}
         }
 
 
@@ -161,7 +164,6 @@ public class Test extends LinearOpMode
             UseWormGear();
 
             UpdateTelemetry();
-            sleep(10);
         }
     }
 
