@@ -1,3 +1,20 @@
+/*
+ * STIL:
+ *
+ * Variabilele folosesc snake_case iar
+ * clasele si functiile CamelCase.
+ *
+ * Intre if, while, for, switch si () se lasa un spatiu.
+ *
+ * Constantele se declara la inceputul clasei
+ * si se denumesc folosind MAJUSCULE.
+ *
+ * Nu se folosesc comentarii de tipul // 
+ * pentru a fi consistenti. 
+ *
+ * Codul trebuie sa fie in engleza deoarece
+ * API-ul e in engleza.
+ */
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,7 +34,7 @@ public class Test extends LinearOpMode
     {
         front_right_motor.setDirection(DcMotorSimple.Direction.REVERSE);
         back_right_motor.setDirection(DcMotorSimple.Direction.REVERSE);
-        front_left_motor.setDirection(DcMotorSimple.Direction.FORWARD); /* Motorul e pus inveDASDADSADSADSADASDrs */
+        front_left_motor.setDirection(DcMotorSimple.Direction.FORWARD); /* Motorul e pus invers */
         back_left_motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
