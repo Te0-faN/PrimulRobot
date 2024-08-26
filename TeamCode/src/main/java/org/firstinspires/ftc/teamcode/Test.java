@@ -63,12 +63,12 @@ public class Test extends LinearOpMode
     {
         TouchSensor touch = hardwareMap.get(TouchSensor.class, "limitSwitch");
 
-        /* De ce sunt sufixate cu 2? */
-        final float ticks2 = 751.8f;
-        double target2;
-        double turnage2;
+        /* De ce sunt sufixate cu 2? */  //Pentru ca la un momentdat exista 1
+        final float ticks = 751.8f;
+        double target;
+        double turnage;
 
-        final float MAX_POSITION = -1; /* ? */
+        float MAX_POSITION = -180; /* ? */ // Daca nu sti ce face ceva nu schimba, ai redenumit variabila si probabil ai luat pana la -1 in loc de -180
         float current_position   = 0.0f;
 
         boolean X         = gamepad1.x;
@@ -79,15 +79,17 @@ public class Test extends LinearOpMode
             worm_gear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
             worm_gear.setPower(0.5);
-            while (!touch.isPressed()); /* Asteapta sa se apese */
+            while (!touch.isPressed()) {
+
+            }; /* Asteapta sa se apese */
 
             worm_gear.setPower(0);
             worm_gear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            turnage2 = 10;
-            target2 = (turnage2 / 360) * 28 * ticks2;
-            worm_gear.setTargetPosition((int) target2);
+            turnage = 10;
+            target = (turnage / 360) * 28 * ticks;
+            worm_gear.setTargetPosition((int) target);
             worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             worm_gear.setPower(0.5);
             current_position += 10f;
@@ -96,26 +98,23 @@ public class Test extends LinearOpMode
         }
 
         if (dpad_up) {
-            if (MAX_POSITION != current_position) /* Explica */
+            if (current_position != MAX_POSITION )  {/* Explica */ //aveai cod vechi
                 worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            turnage2 = 2.5;
-            target2 = (turnage2 / 360) * 28 * ticks2;
-            worm_gear.setTargetPosition((int) target2);
-            worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            worm_gear.setPower(0.5);
-            /* E imposibil sa fie apasat. */
-            if (touch.isPressed()) {
-                worm_gear.setPower(0);
-            } else {
+                turnage = 2.5;
+                target = (turnage / 360) * 28 * ticks;
+                worm_gear.setTargetPosition((int) target);
+                worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                worm_gear.setPower(0.5);
                 current_position += 2.5f;
+
             }
         }
 
         if (dpad_down) {
             worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            turnage2 = -2.5;
-            target2 = (turnage2 / 360) * 28 * ticks2;
-            worm_gear.setTargetPosition((int) target2);
+            turnage = -2.5;
+            target = (turnage / 360) * 28 * ticks;
+            worm_gear.setTargetPosition((int) target);
             worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             worm_gear.setPower(0.5);
             if (touch.isPressed()) {
