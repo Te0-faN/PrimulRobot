@@ -8,15 +8,14 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-@TeleOp(name = "TestOp")
-public class soft_isi extends LinearOpMode
+@TeleOp(name = "Controller")
+public class Controller extends LinearOpMode
 {
 
     @Override
     public void runOpMode()
     {
-
-         double  ticks2 = 751.8f;
+         double ticks2 = 751.8f;
          double maxPos = 180;
          double curentPos = 0;
          double target2 = 0;

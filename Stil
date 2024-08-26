@@ -1,0 +1,17 @@
+STIL:
+
+ Variabilele folosesc snake_case iar
+clasele si functiile CamelCase.
+
+ Intre if, while, for, switch si () se lasa un spatiu.
+
+ Constantele se declara la inceputul clasei
+si se denumesc folosind MAJUSCULE.
+
+ Tipul o constanta de tipul float e urmata de 'f'.
+
+ Nu se folosesc comentarii de tipul // 
+pentru a fi consistenti. 
+
+ Codul trebuie sa fie in engleza deoarece
+API-ul e in engleza.
