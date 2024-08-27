@@ -79,9 +79,7 @@ public class Test extends LinearOpMode
             worm_gear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
             worm_gear.setPower(0.5);
-            while (!touch.isPressed()) {
-
-            }; /* Asteapta sa se apese */
+            while (!touch.isPressed());
 
             worm_gear.setPower(0);
             worm_gear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

@@ -28,13 +28,14 @@ public class Controller extends LinearOpMode
          DcMotor back_right_motor = hardwareMap.dcMotor.get("backRightMotor");
 
          DcMotor worm_gear = hardwareMap.dcMotor.get("motor2");
+         DcMotor wheel = hardwareMap.dcMotor.get("roata");
 
-          TouchSensor touch = hardwareMap.get(TouchSensor.class, "limitSwitch");
 
 
         front_right_motor.setDirection(DcMotorSimple.Direction.REVERSE);
         back_right_motor.setDirection(DcMotorSimple.Direction.REVERSE);
-        front_left_motor.setDirection(DcMotorSimple.Direction.FORWARD); /* Motorul e pus invers */
+        front_left_motor.setDirection(DcMotorSimple.Direction.FORWARD);
+        wheel.setDirection(DcMotorSimple.Direction.FORWARD);
         back_left_motor.setDirection(DcMotorSimple.Direction.REVERSE);
         worm_gear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -64,59 +65,41 @@ public class Controller extends LinearOpMode
             back_right_motor.setPower(back_right_power);
 
             boolean X = gamepad1.x;
+            boolean A = gamepad1.a;
             boolean dpad_up = gamepad1.dpad_down;
             boolean dpad_down = gamepad1.dpad_up;
 
             if (X) {
-                worm_gear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                while (!touch.isPressed()) {
-                     worm_gear.setPower(0.5);
-                }
-
-                worm_gear.setPower(0);
-                worm_gear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-                turnage2 = 10;
-                target2 = (turnage2 / 360) * 28 * ticks2;
-                worm_gear.setTargetPosition((int) target2);
-                worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                worm_gear.setPower(0.5);
-                curentPos = curentPos+10;
-
-
-
-                worm_gear.setPower(0);
+                wheel.setPower(-0.75);
+            } else {
+                wheel.setPower(0);
             }
 
+            if (A) {
+                wheel.setPower(-1);
+            } else {
+                wheel.setPower(0);
+            }
             if (dpad_up) {
-                if(maxPos != curentPos) 
-                    worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                turnage2 = 2.5;
+                worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                turnage2 = 1.5;
                 target2 = (turnage2 / 360) * 28 * ticks2;
                 worm_gear.setTargetPosition((int) target2);
                 worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                worm_gear.setPower(0.5);
-                if (touch.isPressed()) {
-                    worm_gear.setPower(0);
-                } else {
+                worm_gear.setPower(0.75);
                     curentPos = curentPos + 2.5;
-                }
+
             }
 
             if (dpad_down) {
                 worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                turnage2 = -2.5;
+                turnage2 = -1.5;
                 target2 = (turnage2 / 360) * 28 * ticks2;
                 worm_gear.setTargetPosition((int) target2);
                 worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                worm_gear.setPower(0.5);
-                if (touch.isPressed()) {
-                    worm_gear.setPower(0);
-                } else {
+                worm_gear.setPower(0.75);
                     curentPos = curentPos - 2.5;
-                }
+
             }
 
             telemetry.addData("Roata stanga sus :", front_left_motor.getPower());
