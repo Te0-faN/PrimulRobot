@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-@TeleOp(name = "TestOp")
-public class Test extends LinearOpMode
+@TeleOp(name = "Controller")
+public class Controller extends LinearOpMode
 {
     DcMotor front_left_motor;
     DcMotor front_right_motor;
