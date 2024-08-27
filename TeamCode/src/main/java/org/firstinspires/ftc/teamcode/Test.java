@@ -15,6 +15,7 @@ public class Test extends LinearOpMode
     DcMotor back_right_motor;
 
     DcMotor worm_gear;
+    DcMotor wheel;
 
     private void InitializeWheels()
     {
@@ -54,76 +55,55 @@ public class Test extends LinearOpMode
     private void InitializeWormGear()
     {
         worm_gear = hardwareMap.dcMotor.get("motor2");
-
         worm_gear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     private void UseWormGear()
     {
-        TouchSensor touch = hardwareMap.get(TouchSensor.class, "limitSwitch");
-
-        /* De ce sunt sufixate cu 2? */  //Pentru ca la un momentdat exista 1
         final float ticks = 751.8f;
         double target;
         double turnage;
 
-        float MAX_POSITION = -180; /* ? */ // Daca nu sti ce face ceva nu schimba, ai redenumit variabila si probabil ai luat pana la -1 in loc de -180
-        float current_position   = 0.0f;
-
-        boolean X         = gamepad1.x;
         boolean dpad_up   = gamepad1.dpad_up;
         boolean dpad_down = gamepad1.dpad_down;
 
-        if (X) {
-            worm_gear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-            worm_gear.setPower(0.5);
-            while (!touch.isPressed());
-
-            worm_gear.setPower(0);
-            worm_gear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-            turnage = 10;
+        if (dpad_up) {
+            turnage = 1.5;
             target = (turnage / 360) * 28 * ticks;
             worm_gear.setTargetPosition((int) target);
             worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             worm_gear.setPower(0.5);
-            current_position += 10f;
-
-            worm_gear.setPower(0);
-        }
-
-        if (dpad_up) {
-            if (current_position != MAX_POSITION )  {/* Explica */ //aveai cod vechi
-                worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                turnage = 2.5;
-                target = (turnage / 360) * 28 * ticks;
-                worm_gear.setTargetPosition((int) target);
-                worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                worm_gear.setPower(0.5);
-                current_position += 2.5f;
-
-            }
         }
 
         if (dpad_down) {
-            worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            turnage = -2.5;
+            turnage = -1.5;
             target = (turnage / 360) * 28 * ticks;
             worm_gear.setTargetPosition((int) target);
             worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             worm_gear.setPower(0.5);
-            if (touch.isPressed()) {
-                worm_gear.setPower(0);
-            } else {
-                current_position -= 2.5f;
-            }
         }
     }
 
-    private void UpdateTelemetry() 
+    private void InitializeWheel()
+    {
+        wheel = hardwareMap.dcMotor.get("roata");
+        wheel.setDirection(DcMotorSimple.Direction.FORWARD);
+    }
+
+    private void UseWheel()
+    {
+        boolean A = gamepad1.a;
+        boolean X = gamepad1.x;
+
+        if (A)
+            wheel.setPower(-0.75);
+        else if (X)
+            wheel.setPower(-1);
+        else
+            wheel.setPower(0);
+    }
+
+    private void UpdateTelemetry()
     {
         telemetry.addData("Roata stanga sus :", front_left_motor.getPower());
         telemetry.addData("Roata stanga jos :", back_left_motor.getPower());
@@ -139,10 +119,12 @@ public class Test extends LinearOpMode
 
         InitializeWheels();
         InitializeWormGear();
+        InitializeWheel();
 
         while (opModeIsActive()) {
             SetWheelsPower();
             UseWormGear();
+            UseWheel();
 
             UpdateTelemetry();
         }
