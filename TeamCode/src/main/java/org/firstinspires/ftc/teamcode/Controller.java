@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 @TeleOp(name = "Controller")
 public class Controller extends LinearOpMode
@@ -32,7 +31,7 @@ public class Controller extends LinearOpMode
 
     private void SetWheelsPower()
     {
-        /* Stick ul din stanga e folosit pentru deplasare pe orizontala si cel din stanga pentru rotire */
+        /* Stick ul din stanga e folosit pentru deplasare si cel din stanga pentru rotire */
         double left_stick_x  =  gamepad1.left_stick_x;		
         double left_stick_y  = -gamepad1.left_stick_y;		
         double right_stick_x =  gamepad1.right_stick_x;
@@ -63,26 +62,41 @@ public class Controller extends LinearOpMode
         final float ticks = 751.8f;
         double target;
         double turnage;
-
-        boolean dpad_up   = gamepad1.dpad_up;
-        boolean dpad_down = gamepad1.dpad_down;
-
-        if (dpad_up) {
+        
+        if (gamepad1.dpad_up) {
             turnage = 1.5;
             target = (turnage / 360) * 28 * ticks;
             worm_gear.setTargetPosition((int) target);
             worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            worm_gear.setPower(0.5);
+            worm_gear.setPower(0.75);
         }
 
-        if (dpad_down) {
+        if (gamepad1.dpad_down) {
             turnage = -1.5;
             target = (turnage / 360) * 28 * ticks;
             worm_gear.setTargetPosition((int) target);
             worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            worm_gear.setPower(0.5);
+            worm_gear.setPower(0.75);
         }
-    }
+
+        if (gamepad1.left_trigger > 0.0) {
+                worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                turnage = 10;
+                target = (turnage / 360) * 28 * ticks;
+                worm_gear.setTargetPosition((int) target);
+                worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                worm_gear.setPower(0.75);
+        }
+
+        if (gamepad1.right_trigger > 0.0) {
+                worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                turnage = -10;
+                target = (turnage / 360) * 28 * ticks;
+                worm_gear.setTargetPosition((int) target);
+                worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                worm_gear.setPower(0.75);
+        }
+}
 
     private void InitializeWheel()
     {
@@ -92,12 +106,9 @@ public class Controller extends LinearOpMode
 
     private void UseWheel()
     {
-        boolean A = gamepad1.a;
-        boolean X = gamepad1.x;
-
-        if (A)
-            wheel.setPower(-0.75);
-        else if (X)
+        if (gamepad1.a)
+            wheel.setPower(1);
+        else if (gamepad1.x)
             wheel.setPower(-1);
         else
             wheel.setPower(0);
@@ -109,6 +120,7 @@ public class Controller extends LinearOpMode
         telemetry.addData("Roata stanga jos :", back_left_motor.getPower());
         telemetry.addData("Roata dreapta sus:", front_right_motor.getPower());
         telemetry.addData("Roata dreapta jos:", back_right_motor.getPower());
+        telemetry.addData("Unghi worm gear  :", worm_gear.getCurrentPosition());
         telemetry.update();                  
     }
 
