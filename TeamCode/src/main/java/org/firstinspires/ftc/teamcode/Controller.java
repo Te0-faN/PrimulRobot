@@ -31,7 +31,6 @@ public class Controller extends LinearOpMode
 
     private void SetWheelsPower()
     {
-        /* Stick ul din stanga e folosit pentru deplasare si cel din stanga pentru rotire */
         double left_stick_x  =  gamepad1.left_stick_x;		
         double left_stick_y  = -gamepad1.left_stick_y;		
         double right_stick_x =  gamepad1.right_stick_x;
@@ -59,22 +58,25 @@ public class Controller extends LinearOpMode
 
     private void UseWormGear()
     {
-        final float ticks = 751.8f;
+        /* Unitatea cu care se roteste un motor */
+        final float TICKS = 751.8f;
         double target;
         double turnage;
         
         if (gamepad1.dpad_up) {
-            turnage = 1.5;
-            target = (turnage / 360) * 28 * ticks;
-            worm_gear.setTargetPosition((int) target);
+            worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            turnage = -1.5;
+            target = (turnage / 360) * 28 * TICKS;
+            worm_gear.setTargetPosition((int)target);
             worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             worm_gear.setPower(0.75);
         }
 
         if (gamepad1.dpad_down) {
-            turnage = -1.5;
-            target = (turnage / 360) * 28 * ticks;
-            worm_gear.setTargetPosition((int) target);
+            worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            turnage =  1.5;
+            target = (turnage / 360) * 28 * TICKS;
+            worm_gear.setTargetPosition((int)target);
             worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             worm_gear.setPower(0.75);
         }
@@ -82,7 +84,7 @@ public class Controller extends LinearOpMode
         if (gamepad1.left_trigger > 0.0) {
                 worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 turnage = 10;
-                target = (turnage / 360) * 28 * ticks;
+                target = (turnage / 360) * 28 * TICKS;
                 worm_gear.setTargetPosition((int) target);
                 worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 worm_gear.setPower(0.75);
@@ -91,7 +93,7 @@ public class Controller extends LinearOpMode
         if (gamepad1.right_trigger > 0.0) {
                 worm_gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 turnage = -10;
-                target = (turnage / 360) * 28 * ticks;
+                target = (turnage / 360) * 28 * TICKS;
                 worm_gear.setTargetPosition((int) target);
                 worm_gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 worm_gear.setPower(0.75);
@@ -106,12 +108,21 @@ public class Controller extends LinearOpMode
 
     private void UseWheel()
     {
+        float power = 0.0f;
+
         if (gamepad1.a)
-            wheel.setPower(1);
+            power =  0.5f;
         else if (gamepad1.x)
-            wheel.setPower(-1);
+            power = -0.5f;
         else
-            wheel.setPower(0);
+            power = 0;
+
+        if (gamepad1.left_bumper)
+            power += 0.05f;
+        else if (gamepad1.right_bumper)
+            power -= 0.05f;
+
+        wheel.setPower(power);
     }
 
     private void UpdateTelemetry()
@@ -121,7 +132,8 @@ public class Controller extends LinearOpMode
         telemetry.addData("Roata dreapta sus:", front_right_motor.getPower());
         telemetry.addData("Roata dreapta jos:", back_right_motor.getPower());
         telemetry.addData("Unghi worm gear  :", worm_gear.getCurrentPosition());
-        telemetry.update();                  
+        telemetry.addData("Putere Roata     :", wheel.getPower());
+        telemetry.update();
     }
 
     @Override
