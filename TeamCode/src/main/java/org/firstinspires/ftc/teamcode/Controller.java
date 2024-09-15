@@ -139,11 +139,11 @@ public class Controller extends LinearOpMode
     @Override
     public void runOpMode()
     {
-        waitForStart();
-
         InitializeWheels();
         InitializeWormGear();
         InitializeWheel();
+
+        waitForStart();
 
         while (opModeIsActive()) {
             SetWheelsPower();
