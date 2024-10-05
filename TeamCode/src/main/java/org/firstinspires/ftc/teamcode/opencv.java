@@ -18,22 +18,23 @@ import java.util.List;
 
 public class opencv extends LinearOpMode {
 
-    double cX = 0;
-    double cY = 0;
+    double cX    = 0;
+    double cY    = 0;
     double width = 0;
 
-    private OpenCvCamera webcam;  /* Use OpenCvCamera class from FTC SDK */
-    private static final int CAMERA_WIDTH = 640; /* width  of wanted camera resolution */
+    private OpenCvCamera webcam;                  /* Use OpenCvCamera class from FTC SDK */
+    private static final int CAMERA_WIDTH  = 640;  /* width  of wanted camera resolution */
     private static final int CAMERA_HEIGHT = 360; /* height of wanted camera resolution */
 
     /* Calculate the distance using the formula */
-    public static final double objectWidth = 3.75;  /* Replace with the actual width of the object in real-world units */
+    public static final double objectWidth = 3.75; /* Replace with the actual width of the object in real-world units */
     public static final double focalLength = 728;  /* Replace with the focal length of the camera in pixels */
 
 
     @Override
     public void runOpMode() {
 
+        /* The OpenCV pipeline automatically processes frames and handles detection */
         initOpenCV();
 
         waitForStart();
@@ -42,8 +43,6 @@ public class opencv extends LinearOpMode {
             telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
             telemetry.addData("Distance in Inch", (getDistance(width)));
             telemetry.update();
-
-            /* The OpenCV pipeline automatically processes frames and handles detection */
         }
 
         /* Release resources */
@@ -121,17 +120,19 @@ public class opencv extends LinearOpMode {
                     largestContour = contour;
                 }
             }
-
             return largestContour;
         }
+
         private double calculateWidth(MatOfPoint contour) {
             Rect boundingRect = Imgproc.boundingRect(contour);
             return boundingRect.width;
         }
 
     }
-    private static double getDistance(double width){
+    private static double getDistance(double width) {
         double distance = (objectWidth * focalLength) / width;
         return distance;
     }
+
 }
+
